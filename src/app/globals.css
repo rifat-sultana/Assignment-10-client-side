@@ -2,6 +2,9 @@
 @plugin "daisyui";
 
 @plugin "daisyui/theme" {
-  name: "retro";
+  name: "light";
   default: true;
+}
+body {
+  background: white !important;
 }
