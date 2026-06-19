@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "title": "The Silent Patient",
+    "author": "Alex Michaelides",
+    "category": "Mystery",
+    "price": 14.99,
+    "status": "Available",
+    "image": "https://i.ibb.co/DfmL4WMt/The-Silent-Patient-by-Alex-Michaelides-June-2020-Cover-min-1068x623.jpg"
+  },
+  {
+    "id": 2,
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "category": "Self Help",
+    "price": 12.50,
+    "status": "Available",
+    "image": "https://i.ibb.co/kVP0s8Rs/atomichabits-1600x800-update.jpg"
+  },
+  {
+    "id": 3,
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "category": "Programming",
+    "price": 18.99,
+    "status": "Available",
+    "image": "https://i.ibb.co/q3WVQBzP/3e55e57fac4d8d71f675f3f1a14764b3-jpg-720x720q80-jpg.webp"
+  },
+  {
+    "id": 4,
+    "title": "The Alchemist",
+    "author": "Paulo Coelho",
+    "category": "Fiction",
+    "price": 10.99,
+    "status": " Not Available",
+    "image": "https://i.ibb.co/4R9kSk7B"
+  },
+  {
+    "id": 5,
+    "title": "Deep Work",
+    "author": "Cal Newport",
+    "category": "Productivity",
+    "price": 13.99,
+    "status": "Available",
+    "image": "https://i.ibb.co/RT88CCJ5/491963861-1233116195489253-7200966069870684893-n.jpg"
+  },
+  {
+    "id": 6,
+    "title": "Think and Grow Rich",
+    "author": "Napoleon Hill",
+    "category": "Business",
+    "price": 11.99,
+    "status": " Not Available",
+    "image": "https://i.ibb.co/rR0BXNL2/518c18j-Qxj-L-SY445-SX342-FMwebp.webp"
+  },
+  {
+    "id": 7,
+    "title": "Rich Dad Poor Dad",
+    "author": "Robert Kiyosaki",
+    "category": "Finance",
+    "price": 15.99,
+    "status": " Not Available",
+    "image": "https://i.ibb.co/32GMs9prich-dad-poor-dad-20th-anniversary-edition.jpg"
+  },
+  {
+    "id": 8,
+    "title": "Introduction to Algorithms",
+    "author": "Thomas H. Cormen",
+    "category": "Academic",
+    "price": 42.99,
+    "status": "Available",
+    "image": "https://i.ibb.co/JjwWNFL7/1-zy8-FQTrf-XCRz8z-JQc-Fja-g.webp"
+  },
+  {
+    "id": 9,
+    "title": "The Psychology of Money",
+    "author": "Morgan Housel",
+    "category": "Finance",
+    "price": 16.50,
+    "status": "Available",
+    "image": "https://i.ibb.co/GvNdfpvg"
+  },
+  {
+    "id": 10,
+    "title": "Harry Potter and the Sorcerer's Stone",
+    "author": "J.K. Rowling",
+    "category": "Fantasy",
+    "price": 19.99,
+    "status": "Available",
+    "image": "https://i.ibb.co/v6WntMRz"
+  },
+  {
+    "id": 11,
+    "title": "The Pragmatic Programmer",
+    "author": "Andrew Hunt",
+    "category": "Programming",
+    "price": 24.99,
+    "status": "Available",
+    "image": "https://i.ibb.co/6zV1Z7H"
+  },
+  {
+    "id": 12,
+    "title": "Sapiens",
+    "author": "Yuval Noah Harari",
+    "category": "History",
+    "price": 17.99,
+    "status": "Available",
+    "image": "https://i.ibb.co/SXBBQw0q/201020-sapiens-mn-2x1.jpg"
+  }
+]
