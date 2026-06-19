@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
+import { toast } from "react-toastify";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -13,12 +14,20 @@ export default function RegisterForm() {
 
   const role = document.getElementById("role").value;
 
-  if (role === "reader") {
-    router.push("/");
+   if (role === "reader") {
+    toast.success("You're now registered as a Reader!");
+
+    setTimeout(() => {
+      router.push("/");
+    }, 1500);
   }
 
   if (role === "librarian") {
-    router.push("/dashboard");
+    toast.success("You're now registered as a Librarian!");
+
+    setTimeout(() => {
+      router.push("/dashboard");
+    }, 1500);
   }
 };
 
@@ -79,7 +88,7 @@ export default function RegisterForm() {
             Librarian
           </option>
         </select>
-        
+
 
           {/* Register Button */}
          <button
