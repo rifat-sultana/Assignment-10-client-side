@@ -81,7 +81,7 @@ const PopularCategories = () => {
             return (
               <div
                 key={index}
-                className="bg-gray-100 rounded-xl p-5 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
+                className="bg-purple-50 rounded-xl p-5 shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 cursor-pointer"
               >
                 <Icon className="w-7 h-7 text-primary mb-3" />
 
