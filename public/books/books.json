@@ -33,7 +33,7 @@
     "category": "Fiction",
     "price": 10.99,
     "status": " Not Available",
-    "image": "https://i.ibb.co/4R9kSk7B"
+    "image": "https://i.ibb.co/zppxc0K/the-alchemist-a-graphic-novel.jpg"
   },
   {
     "id": 5,
@@ -87,7 +87,7 @@
     "category": "Fantasy",
     "price": 19.99,
     "status": "Available",
-    "image": "https://i.ibb.co/v6WntMRz"
+    "image": "https://i.ibb.co/rRYWG0sD/j-k-rowling-harry-potter-and-the-sorcerer-s-stone-book-1.webp"
   },
   {
     "id": 11,
@@ -96,7 +96,7 @@
     "category": "Programming",
     "price": 24.99,
     "status": "Available",
-    "image": "https://i.ibb.co/6zV1Z7H"
+    "image": "https://i.ibb.co/bjfmmyJr/tpp20.jpg"
   },
   {
     "id": 12,
