@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function BookCard({ book }) {
   return (
@@ -15,7 +16,7 @@ export default function BookCard({ book }) {
 
       <div className="p-4">
 
-        <span className="inline-block px-3 py-1 text-xs font-semibold text-white bg-indigo-600 rounded-full mb-3">
+        <span className="inline-block px-3 py-1 text-xs font-bold text-black bg-red-400 rounded-full mb-3">
           {book.category}
         </span>
 
@@ -43,6 +44,12 @@ export default function BookCard({ book }) {
             {book.status}
           </span>
         </div>
+
+          <Link href={`/books/${book.id}`}>
+              <button className="btn btn-primary w-full mt-4">
+                View Details
+              </button>
+            </Link>
       </div>
     </div>
   );

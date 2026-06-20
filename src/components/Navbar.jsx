@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 
 export default function Navbar() {
@@ -12,7 +12,23 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
  
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+ const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+ const [role, setRole] = useState("");
+
+  useEffect(() => {
+    const loginStatus =
+      localStorage.getItem("isLoggedIn");
+
+    const userRole =
+    localStorage.getItem("role");
+
+    if (loginStatus === "true") {
+      setIsLoggedIn(true);
+      setRole(userRole);
+  }
+}, []);
+ 
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -22,11 +38,14 @@ export default function Navbar() {
     { name: "Contact", href: "/contact" },
   ];
 
-  const handleSignOut = () => {
-    localStorage.clear();
-    setIsLoggedIn(false);
-    window.location.href = "/";
-  };
+
+const handleSignOut = () => {
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("role");
+
+  setIsLoggedIn(false);
+  window.location.href = "/";
+};
 
   return (
     <div className="navbar bg-white sticky top-0 z-50 px-6 py-2 border-b border-gray-200 shadow-sm">
@@ -100,7 +119,7 @@ export default function Navbar() {
               className="btn btn-outline rounded-xl border-gray-200"
             >
               <FaUserCircle size={18} />
-              <span>user</span>
+              <span>{role}</span>
             </div>
 
             <ul
@@ -110,7 +129,7 @@ export default function Navbar() {
 
               <li className="pointer-events-none">
                 <span className="font-bold">
-                  user
+                  {role}
                 </span>
               </li>
 
