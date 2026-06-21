@@ -9,8 +9,11 @@ export default function LoginForm() {
   const router = useRouter();
 
   const handleLogin = () => {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    const email =
+      document.getElementById("email").value;
+
+    const password =
+      document.getElementById("password").value;
 
     const savedUser = JSON.parse(
       localStorage.getItem("user")
@@ -34,13 +37,14 @@ export default function LoginForm() {
 
       localStorage.setItem(
         "role",
-        savedUser.role
+        savedUser.role || "user"
       );
 
       toast.success("Login Successful");
 
       setTimeout(() => {
         router.push("/");
+        router.refresh();
       }, 1000);
     } else {
       toast.error(
@@ -51,9 +55,7 @@ export default function LoginForm() {
 
   return (
     <div className="min-h-screen bg-base-200 flex justify-center items-center p-5">
-
       <div className="card bg-base-100 shadow-xl w-full max-w-lg">
-
         <div className="card-body">
 
           <h2 className="text-3xl font-bold text-center">
@@ -106,9 +108,7 @@ export default function LoginForm() {
           </p>
 
         </div>
-
       </div>
-
     </div>
   );
 }

@@ -1,69 +1,124 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import ReviewSection from "./ReviewSection";
 import LibrarianControls from "./LibrarianControls";
 
-export default function BookDetails() {
-  const [mounted, setMounted] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [role, setRole] = useState("");
+export default function BookDetails({ bookId }) {
+  const router = useRouter();
+
+  const [book, setBook] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] =
+    useState(false);
+
+  const [role, setRole] =
+    useState("");
 
   useEffect(() => {
-    setMounted(true);
-
     const loggedIn =
-      localStorage.getItem("isLoggedIn") === "true";
+      localStorage.getItem("isLoggedIn") ===
+      "true";
 
     const userRole =
       localStorage.getItem("role") || "";
 
     setIsLoggedIn(loggedIn);
     setRole(userRole);
-  }, []);
 
-  if (!mounted) return null;
+    fetch(
+      `http://localhost:5000/books/${bookId}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        setBook(data);
+      })
+      .catch((err) =>
+        console.error(err)
+      );
+  }, [bookId]);
 
-  const book = {
-  title: "Atomic Habits",
-  author: "James Clear",
-  image:
-    "https://i.ibb.co/kVP0s8Rs/atomichabits-1600x800-update.jpg",
-  description:
-    "A practical guide to building good habits and breaking bad ones.",
-  deliveryFee: 80,
-  status: "Available",
-};
+  const handleWishlist = () => {
+    const wishlist =
+      JSON.parse(
+        localStorage.getItem(
+          "wishlist"
+        )
+      ) || [];
 
-const handleWishlist = () => {
-  const wishlist =
-    JSON.parse(
-      localStorage.getItem("wishlist")
-    ) || [];
+    const exists =
+      wishlist.find(
+        (item) =>
+          item.id === book.id
+      );
 
-  const exists = wishlist.find(
-    (item) => item.title === book.title
-  );
+    if (exists) {
+      alert(
+        "Book already in wishlist"
+      );
+      return;
+    }
 
-  if (exists) {
-    alert("Book already in wishlist");
-    return;
+    wishlist.push(book);
+
+    localStorage.setItem(
+      "wishlist",
+      JSON.stringify(wishlist)
+    );
+
+    alert(
+      "Book added to wishlist"
+    );
+  };
+
+  const handleDeliveryRequest =
+    async () => {
+      try {
+        const response =
+          await fetch(
+            `http://localhost:5000/books/delivery/${book.id}`,
+            {
+              method: "PATCH",
+            }
+          );
+
+        const data =
+          await response.json();
+
+        if (data.success) {
+          alert(
+            "Delivery Requested Successfully"
+          );
+
+          setBook({
+            ...book,
+            deliveryStatus:
+              "Pending Delivery",
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+  if (!book) {
+    return (
+      <div className="text-center py-20">
+        Loading...
+      </div>
+    );
   }
 
-  wishlist.push(book);
-
-  localStorage.setItem(
-    "wishlist",
-    JSON.stringify(wishlist)
-  );
-
-  alert("Book added to wishlist");
-};
+  const currentStatus =
+    book.deliveryStatus ||
+    book.status ||
+    "Available";
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-10">
+
       <div className="grid md:grid-cols-2 gap-10">
-        {/* Book Image */}
+
         <div>
           <img
             src={book.image}
@@ -72,8 +127,8 @@ const handleWishlist = () => {
           />
         </div>
 
-        {/* Book Details */}
         <div>
+
           <h1 className="text-4xl font-bold">
             {book.title}
           </h1>
@@ -82,58 +137,86 @@ const handleWishlist = () => {
             Author: {book.author}
           </p>
 
-          <p className="mt-4 text-gray-600">
-            {book.description}
-          </p>
+          {book.description && (
+            <p className="mt-4 text-gray-600">
+              {book.description}
+            </p>
+          )}
 
           <div className="mt-6 space-y-2">
+
             <p>
               Delivery Fee:
               <span className="font-bold text-orange-500">
-                {" "}৳{book.deliveryFee}
+                {" "}
+                $
+                {book.deliveryFee ||
+                  book.price}
               </span>
             </p>
 
             <p>
               Status:
               <span className="font-semibold text-green-600">
-                {" "}{book.status}
+                {" "}
+                {currentStatus}
               </span>
             </p>
+
           </div>
 
-          {/* Login User Features */}
-          {isLoggedIn && (
-            <div className="flex flex-wrap gap-4 mt-8">
-              <button className="btn btn-success">
-                Request Delivery
-              </button>
+          {/* Delivery & Wishlist Buttons */}
+{/* Delivery & Wishlist Buttons */}
+<div className="flex flex-wrap gap-4 mt-8">
 
-             <button
-              onClick={handleWishlist}
-              className="btn btn-outline"
-              >
-              Add to Wishlist
-              </button>
-            </div>    
-          )}
+  {isLoggedIn ? (
+    <button
+      onClick={handleDeliveryRequest}
+      className="btn btn-success"
+    >
+      Request Delivery
+    </button>
+  ) : (
+    <button
+      onClick={() => {
+        localStorage.setItem(
+          "redirectAfterLogin",
+          `/books/${bookId}`
+        );
+        window.location.href = "/login";
+      }}
+      className="btn btn-primary"
+    >
+      Login to Request Delivery
+    </button>
+  )}
 
-          {/* Librarian Only */}
+  <button
+    onClick={handleWishlist}
+    className="btn btn-outline"
+  >
+    Add to Wishlist
+  </button>
+
+</div>
+
           {isLoggedIn &&
-            role === "librarian" && (
+            role ===
+              "librarian" && (
               <div className="mt-8">
                 <LibrarianControls />
               </div>
             )}
+
         </div>
       </div>
 
-      {/* Reviews Only For Logged In Users */}
       {isLoggedIn && (
         <div className="mt-10">
           <ReviewSection />
         </div>
       )}
+
     </div>
   );
 }
