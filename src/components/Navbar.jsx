@@ -16,6 +16,12 @@ export default function Navbar() {
 
  const [role, setRole] = useState("");
 
+
+ const dashboardLink =
+  role === "librarian"
+    ? "/dashboard/librarian"
+    : "/dashboard/user";
+
   useEffect(() => {
     const loginStatus =
       localStorage.getItem("isLoggedIn");
@@ -137,7 +143,7 @@ const handleSignOut = () => {
               <div className="divider my-1"></div>
 
               <li>
-                <Link href="/dashboard">
+                <Link  href={dashboardLink}>
                   Dashboard
                 </Link>
               </li>
@@ -226,7 +232,7 @@ const handleSignOut = () => {
             <div className="flex flex-col gap-2">
 
               <Link
-                href="/dashboard"
+                href={dashboardLink}
                 className="btn btn-outline rounded-xl"
               >
                 Dashboard

@@ -40,6 +40,11 @@ export default function LoginForm() {
         savedUser.role || "user"
       );
 
+      localStorage.setItem(
+        "email",
+        savedUser.email
+      );
+
       toast.success("Login Successful");
 
       setTimeout(() => {
