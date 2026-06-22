@@ -3,19 +3,43 @@
 import { useEffect, useState } from "react";
 
 export default function DeliveryHistory() {
-  const [books, setBooks] = useState([]);
+  const [deliveries, setDeliveries] =
+    useState([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
   useEffect(() => {
     const email =
       localStorage.getItem("email");
 
     fetch(
-      `http://localhost:5000/readinglist/${email}`
+      `http://localhost:5000/deliveries/${email}`
     )
       .then((res) => res.json())
-      .then((data) => setBooks(data))
-      .catch(console.error);
+     .then((data) => {
+  console.log("Deliveries:", data);
+
+  setDeliveries(data);
+  setLoading(false);
+})
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
   }, []);
+
+  if (loading) {
+    return (
+      <div className="bg-white p-5 rounded-xl shadow">
+        <h2 className="text-2xl font-bold mb-4">
+          Delivery History
+        </h2>
+
+        <p>Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white p-5 rounded-xl shadow">
@@ -24,27 +48,71 @@ export default function DeliveryHistory() {
         Delivery History
       </h2>
 
-      <table className="table">
-        <thead>
-          <tr>
-            <th>Book</th>
-            <th>Fee</th>
-            <th>Status</th>
-          </tr>
-        </thead>
+      {deliveries.length === 0 ? (
+        <p>
+          No delivery requests found.
+        </p>
+      ) : (
+        <div className="overflow-x-auto">
 
-        <tbody>
-          {books.map((book) => (
-            <tr key={book._id}>
-              <td>{book.title}</td>
-              <td>
-                ৳{book.deliveryFee}
-              </td>
-              <td>{book.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          <table className="table table-zebra">
+
+            <thead>
+              <tr>
+                <th>Book Title</th>
+                <th>Delivery Fee</th>
+                <th>Request Date</th>
+                <th>Status</th>
+                <th>Transaction ID</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              {deliveries.map(
+                (delivery) => (
+                  <tr
+                    key={delivery._id}
+                  >
+                    <td>
+                      {delivery.title}
+                    </td>
+
+                    <td>
+                      $
+                      {delivery.fee}
+                    </td>
+
+                    <td>
+                      {delivery.requestDate
+                        ? new Date(
+                            delivery.requestDate
+                          ).toLocaleDateString()
+                        : "N/A"}
+                    </td>
+
+                    <td>
+                      <span className="badge badge-warning">
+                        {
+                          delivery.status
+                        }
+                      </span>
+                    </td>
+
+                    <td>
+                      {delivery.transactionId ||
+                        "N/A"}
+                    </td>
+                  </tr>
+                )
+              )}
+
+            </tbody>
+
+          </table>
+
+        </div>
+      )}
 
     </div>
   );
