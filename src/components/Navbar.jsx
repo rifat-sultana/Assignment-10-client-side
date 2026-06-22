@@ -10,58 +10,67 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);
-
- 
- const [isLoggedIn, setIsLoggedIn] = useState(false);
-
- const [role, setRole] = useState("");
-
-
- const dashboardLink =
-  role === "librarian"
-    ? "/dashboard/librarian"
-    : "/dashboard/user";
+  const [isLoggedIn, setIsLoggedIn] =
+    useState(false);
+  const [role, setRole] =
+    useState("");
 
   useEffect(() => {
     const loginStatus =
       localStorage.getItem("isLoggedIn");
 
     const userRole =
-    localStorage.getItem("role");
+      localStorage.getItem("role");
 
-    if (loginStatus === "true") {
-      setIsLoggedIn(true);
-      setRole(userRole);
-  }
-}, []);
- 
+    setIsLoggedIn(
+      loginStatus === "true"
+    );
+
+    setRole(userRole || "");
+  }, []);
+
+  const dashboardLink =
+    role === "librarian"
+      ? "/dashboard/librarian"
+      : "/dashboard/user";
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Browse Books", href: "/browse-books" },
-    { name: "How It Works", href: "/how-it-works" },
+    {
+      name: "Browse Books",
+      href: "/browse-books",
+    },
+    {
+      name: "How It Works",
+      href: "/how-it-works",
+    },
     { name: "About", href: "/about" },
-    { name: "Contact", href: "/contact" },
+    {
+      name: "Contact",
+      href: "/contact",
+    },
   ];
 
+  const handleSignOut = () => {
+    localStorage.removeItem(
+      "isLoggedIn"
+    );
+    localStorage.removeItem("role");
+    localStorage.removeItem("email");
 
-const handleSignOut = () => {
-  localStorage.removeItem("isLoggedIn");
-  localStorage.removeItem("role");
-
-  setIsLoggedIn(false);
-  window.location.href = "/";
-};
+    window.location.href = "/";
+  };
 
   return (
     <div className="navbar bg-white sticky top-0 z-50 px-6 py-2 border-b border-gray-200 shadow-sm">
 
       {/* Logo */}
       <div className="navbar-start">
-        <Link href="/" className="flex items-center gap-2.5">
-
+        <Link
+          href="/"
+          className="flex items-center gap-2.5"
+        >
           <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-indigo-50 border border-indigo-100 overflow-hidden">
-
             <Image
               src="/images/logo.png"
               alt="Logo"
@@ -69,24 +78,26 @@ const handleSignOut = () => {
               height={42}
               className="w-full h-full object-contain"
             />
-
           </div>
 
           <span className="tracking-tight text-xl font-black text-slate-800">
-            <span className="text-indigo-600">Biblio</span>
-            <span className="text-amber-500">Drop</span>
+            <span className="text-indigo-600">
+              Biblio
+            </span>
+            <span className="text-amber-500">
+              Drop
+            </span>
           </span>
-
         </Link>
       </div>
 
       {/* Desktop Menu */}
       <div className="navbar-center hidden md:flex">
-
         <ul className="menu menu-horizontal bg-gray-100 p-1 rounded-full gap-1 border border-gray-200">
 
           {navLinks.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive =
+              pathname === link.href;
 
             return (
               <li key={link.name}>
@@ -105,10 +116,9 @@ const handleSignOut = () => {
           })}
 
         </ul>
-
       </div>
 
-      {/* Desktop Right Side */}
+      {/* Desktop Right */}
       <div className="navbar-end hidden md:flex items-center gap-3">
 
         <button className="btn btn-ghost btn-circle btn-sm border border-gray-200">
@@ -116,7 +126,6 @@ const handleSignOut = () => {
         </button>
 
         {isLoggedIn ? (
-
           <div className="dropdown dropdown-end">
 
             <div
@@ -125,7 +134,12 @@ const handleSignOut = () => {
               className="btn btn-outline rounded-xl border-gray-200"
             >
               <FaUserCircle size={18} />
-              <span>{role}</span>
+
+              <span>
+                {role === "librarian"
+                  ? "Librarian"
+                  : "Reader"}
+              </span>
             </div>
 
             <ul
@@ -135,31 +149,35 @@ const handleSignOut = () => {
 
               <li className="pointer-events-none">
                 <span className="font-bold">
-                  {role}
+                  {role === "librarian"
+                    ? "Librarian"
+                    : "Reader"}
                 </span>
               </li>
 
-              
               <div className="divider my-1"></div>
 
               <li>
-                <Link  href={dashboardLink}>
+                <Link
+                  href={dashboardLink}
+                >
                   Dashboard
                 </Link>
               </li>
 
               <li>
-                <button onClick={handleSignOut}>
+                <button
+                  onClick={
+                    handleSignOut
+                  }
+                >
                   Sign Out
                 </button>
               </li>
 
             </ul>
-
           </div>
-
         ) : (
-
           <>
             <Link
               href="/login"
@@ -175,12 +193,10 @@ const handleSignOut = () => {
               Register
             </Link>
           </>
-
         )}
-
       </div>
 
-      {/* Mobile Buttons */}
+      {/* Mobile */}
       <div className="navbar-end md:hidden flex items-center gap-2">
 
         <button className="btn btn-ghost btn-circle btn-sm border border-gray-200">
@@ -188,7 +204,9 @@ const handleSignOut = () => {
         </button>
 
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() =>
+            setIsOpen(!isOpen)
+          }
           className="btn btn-square btn-ghost btn-sm"
         >
           {isOpen ? "✕" : "☰"}
@@ -196,31 +214,22 @@ const handleSignOut = () => {
 
       </div>
 
-      {/* Mobile Menu */}
       {isOpen && (
-
         <div className="absolute top-16 left-4 right-4 bg-white p-4 rounded-2xl shadow-xl border border-gray-200 flex flex-col gap-2 md:hidden">
 
           <ul className="menu menu-vertical p-0 gap-1">
 
             {navLinks.map((link) => (
-
               <li key={link.name}>
-
                 <Link
                   href={link.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`rounded-xl ${
-                    pathname === link.href
-                      ? "bg-indigo-50 text-indigo-600 font-bold"
-                      : "text-slate-600"
-                  }`}
+                  onClick={() =>
+                    setIsOpen(false)
+                  }
                 >
                   {link.name}
                 </Link>
-
               </li>
-
             ))}
 
           </ul>
@@ -228,7 +237,6 @@ const handleSignOut = () => {
           <div className="divider my-1"></div>
 
           {isLoggedIn ? (
-
             <div className="flex flex-col gap-2">
 
               <Link
@@ -239,16 +247,16 @@ const handleSignOut = () => {
               </Link>
 
               <button
-                onClick={handleSignOut}
+                onClick={
+                  handleSignOut
+                }
                 className="btn btn-error text-white rounded-xl"
               >
                 Sign Out
               </button>
 
             </div>
-
           ) : (
-
             <div className="flex gap-2">
 
               <Link
@@ -266,11 +274,9 @@ const handleSignOut = () => {
               </Link>
 
             </div>
-
           )}
 
         </div>
-
       )}
     </div>
   );
