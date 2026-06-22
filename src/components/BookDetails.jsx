@@ -38,39 +38,56 @@ export default function BookDetails({ bookId }) {
       );
   }, [bookId]);
 
-  const handleWishlist = () => {
-    const wishlist =
-      JSON.parse(
-        localStorage.getItem(
-          "wishlist"
-        )
-      ) || [];
+  const handleWishlist = async () => {
+  try {
+    const email =
+      localStorage.getItem("email");
 
-    const exists =
-      wishlist.find(
-        (item) =>
-          item.id === book.id
-      );
-
-    if (exists) {
+    if (!email) {
       alert(
-        "Book already in wishlist"
+        "Please login first"
       );
       return;
     }
 
-    wishlist.push(book);
+    const response =
+      await fetch(
+        "http://localhost:5000/wishlist",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            bookId: book.id,
+            title: book.title,
+            userEmail: email,
+          }),
+        }
+      );
 
-    localStorage.setItem(
-      "wishlist",
-      JSON.stringify(wishlist)
-    );
+    const data =
+      await response.json();
+
+    if (response.ok) {
+      alert(
+        "Book added to wishlist successfully"
+      );
+    } else {
+      alert(
+        data.message ||
+          "Failed to add wishlist"
+      );
+    }
+  } catch (error) {
+    console.error(error);
 
     alert(
-      "Book added to wishlist"
+      "Something went wrong"
     );
-  };
-
+  }
+};
   const handleDeliveryRequest =
     async () => {
       try {
