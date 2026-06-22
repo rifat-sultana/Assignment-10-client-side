@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Overview from "./Overview";
 import DeliveryHistory from "./DeliveryHistory";
-import ReadingList from "./ReadingList";
+import ReadingList from "./Readinglist";
 import MyReviews from "./MyReviews";
 import WishList from "./WishList";
 
