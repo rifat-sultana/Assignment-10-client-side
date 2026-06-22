@@ -5,6 +5,7 @@ import Overview from "./Overview";
 import DeliveryHistory from "./DeliveryHistory";
 import ReadingList from "./ReadingList";
 import MyReviews from "./MyReviews";
+import WishList from "./WishList";
 
 export default function UserDashboard() {
 const [activeTab, setActiveTab] =
@@ -109,6 +110,16 @@ return ( <div className="min-h-screen bg-base-200 p-6">
             My Reviews
           </button>
         </li>
+            <li>
+          <button
+            onClick={() =>
+              setActiveTab("wishlist")
+            }
+            className="btn btn-outline w-full"
+          >
+            WishList
+          </button>
+        </li>
 
       </ul>
 
@@ -131,6 +142,10 @@ return ( <div className="min-h-screen bg-base-200 p-6">
 
       {activeTab === "reviews" && (
         <MyReviews />
+      )}
+
+      {activeTab === "wishlist" && (
+        <WishList />
       )}
 
     </div>
