@@ -25,6 +25,33 @@ export default function ManageInventory() {
           "Delete this book?"
         );
 
+const editBook = async (book) => {
+  const title = prompt(
+    "Enter new title",
+    book.title
+  );
+
+  if (!title) return;
+
+  await fetch(
+    `http://localhost:5000/books/${book._id}`,
+    {
+      method: "PATCH",
+
+      headers: {
+        "Content-Type":
+          "application/json",
+      },
+
+      body: JSON.stringify({
+        title,
+      }),
+    }
+  );
+
+  loadBooks();
+};
+
   const changeStatus = async (
   id,
   status
@@ -148,11 +175,14 @@ export default function ManageInventory() {
     </button>
   )}
 
-  <button
-    className="btn btn-info btn-xs"
-  >
-    Edit
-  </button>
+ <button
+  onClick={() =>
+    editBook(book)
+  }
+  className="btn btn-info btn-xs"
+>
+  Edit
+</button>
 
   <button
     onClick={() =>
