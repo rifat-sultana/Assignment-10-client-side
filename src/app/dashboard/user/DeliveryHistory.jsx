@@ -9,25 +9,31 @@ export default function DeliveryHistory() {
   const [loading, setLoading] =
     useState(true);
 
-  useEffect(() => {
-    const email =
-      localStorage.getItem("email");
+ useEffect(() => {
+  const email =
+    localStorage.getItem("email");
 
-    fetch(
-      `http://localhost:5000/deliveries/${email}`
-    )
-      .then((res) => res.json())
-     .then((data) => {
-  console.log("Deliveries:", data);
+  console.log("Email:", email);
+  
 
-  setDeliveries(data);
-  setLoading(false);
-})
-      .catch((error) => {
-        console.error(error);
-        setLoading(false);
-      });
-  }, []);
+  fetch(
+    `http://localhost:5000/deliveries/${email}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(
+        "Deliveries:",
+        data
+      );
+
+      setDeliveries(data);
+      setLoading(false);
+    })
+    .catch((error) => {
+      console.error(error);
+      setLoading(false);
+    });
+}, []);
 
   if (loading) {
     return (
