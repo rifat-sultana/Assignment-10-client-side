@@ -6,66 +6,99 @@ import { toast } from "react-toastify";
 
 export default function LoginForm() {
 
-const handleLogin = () => {
-const email =
-document.getElementById("email").value.trim();
+const handleLogin = async () => {
+  const email =
+    document
+      .getElementById("email")
+      .value
+      .trim();
 
+  const password =
+    document
+      .getElementById("password")
+      .value;
 
-const password =
-  document.getElementById("password").value;
+  try {
+    const response =
+      await fetch(
+        "http://localhost:5000/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        }
+      );
 
-const userData =
-  localStorage.getItem("user");
+    const data =
+      await response.json();
 
-if (!userData) {
-  toast.error(
-    "No account found. Please register first."
-  );
-  return;
-}
+    if (!data.success) {
+      toast.error(
+        data.message
+      );
+      return;
+    }
 
-const savedUser =
-  JSON.parse(userData);
+    localStorage.setItem(
+      "token",
+      data.token
+    );
 
-if (
-  savedUser.email === email &&
-  savedUser.password === password
-) {
-  localStorage.setItem(
-    "isLoggedIn",
-    "true"
-  );
+    localStorage.setItem(
+      "isLoggedIn",
+        "true"
+);
 
-  localStorage.setItem(
-    "role",
-    savedUser.role
-  );
+    localStorage.setItem(
+      "role",
+      data.user.role
+    );
 
-  localStorage.setItem(
-    "email",
-    savedUser.email
-  );
+    localStorage.setItem(
+      "email",
+      data.user.email
+    );
 
-  localStorage.setItem(
-    "name",
-    savedUser.name
-  );
+    localStorage.setItem(
+      "name",
+      data.user.name
+    );
 
-  toast.success(
-    "Login Successful"
-  );
+    toast.success(
+      "Login Successful"
+    );
 
-  setTimeout(() => {
-    window.location.href = "/";
-  }, 1000);
+    setTimeout(() => {
+      if (
+        data.user.role ===
+        "admin"
+      ) {
+        window.location.href =
+          "/dashboard/admin";
+      } else if (
+        data.user.role ===
+        "librarian"
+      ) {
+        window.location.href =
+          "/dashboard/librarian";
+      } else {
+        window.location.href =
+          "/dashboard/user";
+      }
+    }, 1000);
+  } catch (error) {
+    console.log(error);
 
-} else {
-  toast.error(
-    "Invalid Email or Password"
-  );
-}
-
-
+    toast.error(
+      "Login Failed"
+    );
+  }
 };
 
 return ( <div className="min-h-screen bg-base-200 flex justify-center items-center p-5">

@@ -15,24 +15,31 @@ export default function Navbar() {
   const [role, setRole] =
     useState("");
 
-  useEffect(() => {
-    const loginStatus =
-      localStorage.getItem("isLoggedIn");
+ useEffect(() => {
+  const token =
+    localStorage.getItem("token");
 
-    const userRole =
-      localStorage.getItem("role");
+    const dashboardLink =
+  role === "admin"
+    ? "/dashboard/admin"
+    : role === "librarian"
+    ? "/dashboard/librarian"
+    : "/dashboard/user";
 
-    setIsLoggedIn(
-      loginStatus === "true"
-    );
+  const userRole =
+    localStorage.getItem("role");
 
-    setRole(userRole || "");
-  }, []);
+  setIsLoggedIn(!!token);
+
+  setRole(userRole || "");
+}, []);
 
   const dashboardLink =
-    role === "librarian"
-      ? "/dashboard/librarian"
-      : "/dashboard/user";
+  role === "admin"
+    ? "/dashboard/admin"
+    : role === "librarian"
+    ? "/dashboard/librarian"
+    : "/dashboard/user";
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -51,15 +58,15 @@ export default function Navbar() {
     },
   ];
 
-  const handleSignOut = () => {
-    localStorage.removeItem(
-      "isLoggedIn"
-    );
-    localStorage.removeItem("role");
-    localStorage.removeItem("email");
+const handleSignOut = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("isLoggedIn");
+  localStorage.removeItem("role");
+  localStorage.removeItem("email");
+  localStorage.removeItem("name");
 
-    window.location.href = "/";
-  };
+  window.location.href = "/";
+};
 
   return (
     <div className="navbar bg-white sticky top-0 z-50 px-6 py-2 border-b border-gray-200 shadow-sm">
@@ -136,10 +143,12 @@ export default function Navbar() {
               <FaUserCircle size={18} />
 
               <span>
-                {role === "librarian"
-                  ? "Librarian"
-                  : "Reader"}
-              </span>
+  {role === "admin"
+    ? "Admin"
+    : role === "librarian"
+    ? "Librarian"
+    : "Reader"}
+</span>
             </div>
 
             <ul
@@ -149,10 +158,12 @@ export default function Navbar() {
 
               <li className="pointer-events-none">
                 <span className="font-bold">
-                  {role === "librarian"
-                    ? "Librarian"
-                    : "Reader"}
-                </span>
+  {role === "admin"
+    ? "Admin"
+    : role === "librarian"
+    ? "Librarian"
+    : "Reader"}
+</span>
               </li>
 
               <div className="divider my-1"></div>
