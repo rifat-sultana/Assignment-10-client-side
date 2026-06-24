@@ -12,26 +12,21 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] =
     useState(false);
-  const [role, setRole] =
-    useState("");
+  const [role, setRole] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
  useEffect(() => {
   const token =
     localStorage.getItem("token");
 
-    const dashboardLink =
-  role === "admin"
-    ? "/dashboard/admin"
-    : role === "librarian"
-    ? "/dashboard/librarian"
-    : "/dashboard/user";
-
   const userRole =
     localStorage.getItem("role");
 
   setIsLoggedIn(!!token);
-
   setRole(userRole || "");
+  setName(localStorage.getItem("name") || "");
+  setEmail(localStorage.getItem("email") || "");
 }, []);
 
   const dashboardLink =
@@ -142,28 +137,19 @@ const handleSignOut = () => {
             >
               <FaUserCircle size={18} />
 
-              <span>
-  {role === "admin"
-    ? "Admin"
-    : role === "librarian"
-    ? "Librarian"
-    : "Reader"}
-</span>
+              <span>{name}</span>
             </div>
 
             <ul
               tabIndex={0}
-              className="dropdown-content menu bg-white rounded-xl z-[100] w-60 p-2 shadow-lg border border-gray-200 mt-2"
+              className="dropdown-content menu bg-white rounded-xl z-100 w-60 p-2 shadow-lg border border-gray-200 mt-2"
             >
 
               <li className="pointer-events-none">
-                <span className="font-bold">
-  {role === "admin"
-    ? "Admin"
-    : role === "librarian"
-    ? "Librarian"
-    : "Reader"}
-</span>
+                <div className="text-left px-2 py-1">
+                  <p className="text-sm font-bold">{email}</p>
+                  <p className="text-xs text-gray-500 capitalize">{role}</p>
+                </div>
               </li>
 
               <div className="divider my-1"></div>
@@ -249,6 +235,12 @@ const handleSignOut = () => {
 
           {isLoggedIn ? (
             <div className="flex flex-col gap-2">
+
+              <div className="text-center p-2 border-b">
+                <p className="font-bold">{name}</p>
+                <p className="text-sm text-gray-500">{email}</p>
+                <p className="text-xs text-gray-400 capitalize">{role}</p>
+              </div>
 
               <Link
                 href={dashboardLink}

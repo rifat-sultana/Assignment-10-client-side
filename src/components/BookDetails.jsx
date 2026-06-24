@@ -130,11 +130,6 @@ localStorage.getItem(
     const data =
       await response.json();
 
-    console.log(
-      "Delivery Response:",
-      data
-    );
-
     if (data.success) {
       alert(
         "Delivery Request Successful"

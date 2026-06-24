@@ -8,23 +8,15 @@ import { toast } from "react-toastify";
 export default function RegisterForm() {
   const router = useRouter();
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-    const confirmPassword =
-      document.getElementById("confirmPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
-    const role =
-      document.getElementById("role").value;
+    const role = document.getElementById("role").value;
 
-    if (
-      !name ||
-      !email ||
-      !password ||
-      !confirmPassword ||
-      !role
-    ) {
+    if (!name || !email || !password || !confirmPassword || !role) {
       toast.error("Please fill all fields");
       return;
     }
@@ -34,37 +26,33 @@ export default function RegisterForm() {
       return;
     }
 
-    const user = {
-      name,
-      email,
-      password,
-      role,
-    };
+    try {
+      const res = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, role }),
+      });
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(user)
-    );
+      const data = await res.json();
 
-    toast.success(
-      "Registration Successful!"
-    );
-
-    setTimeout(() => {
-      router.push("/login");
-    }, 1000);
+      if (data.success) {
+        toast.success("Registration Successful!");
+        setTimeout(() => {
+          router.push("/login");
+        }, 1000);
+      } else {
+        toast.error(data.message);
+      }
+    } catch {
+      toast.error("Server error. Please try again.");
+    }
   };
 
   return (
     <div className="min-h-screen bg-base-200 flex justify-center items-center p-5">
-
       <div className="card bg-base-100 shadow-xl w-full max-w-lg">
-
         <div className="card-body">
-
-          <h2 className="text-4xl font-bold text-center">
-            Create Account
-          </h2>
+          <h2 className="text-4xl font-bold text-center">Create Account</h2>
 
           <p className="text-center text-gray-500 mb-2">
             Experience BiblioDrop now
@@ -102,29 +90,18 @@ export default function RegisterForm() {
             id="role"
             className="select select-bordered w-full h-14 text-base"
           >
-            <option value="">
-              Select Your Role
-            </option>
+            <option value="">Select Your Role</option>
 
-            <option value="reader">
-              Reader
-            </option>
+            <option value="reader">Reader</option>
 
-            <option value="librarian">
-              Librarian
-            </option>
+            <option value="librarian">Librarian</option>
           </select>
 
-          <button
-            onClick={handleRegister}
-            className="btn btn-primary mt-3"
-          >
+          <button onClick={handleRegister} className="btn btn-primary mt-3">
             Create Account
           </button>
 
-          <div className="divider">
-            OR
-          </div>
+          <div className="divider">OR</div>
 
           <button className="btn btn-outline w-full">
             <FcGoogle size={24} />
@@ -133,19 +110,12 @@ export default function RegisterForm() {
 
           <p className="text-center mt-3">
             Already have an account?
-
-            <Link
-              href="/login"
-              className="text-primary ml-2 font-semibold"
-            >
+            <Link href="/login" className="text-primary ml-2 font-semibold">
               Login
             </Link>
           </p>
-
         </div>
-
       </div>
-
     </div>
   );
 }

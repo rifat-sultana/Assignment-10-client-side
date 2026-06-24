@@ -1,6 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Overview from "./Overview";
+import BookApprovalQueue from "./BookApprovalQueue";
+import ManageUsers from "./ManageUsers";
+import ManageAllBooks from "./ManageAllBooks";
+import ViewTransactions from "./ViewTransactions";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -14,7 +19,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-base-200 flex">
-      <div className="w-64 bg-white shadow min-h-screen flex-shrink-0">
+      <div className="w-64 bg-white shadow min-h-screen shrink-0">
         {/* Sidebar */}
         <div className="p-4">
           <h2 className="font-bold text-xl mb-4">Admin Dashboard</h2>
@@ -61,40 +66,15 @@ export default function AdminDashboard() {
 
         {/* Content */}
         <div className="flex-1 p-6">
-          {activeTab === "overview" && (
-            <div className="bg-white p-5 rounded-xl shadow">
-              <h2 className="text-2xl font-bold">Overview</h2>
-              <p className="text-gray-500 mt-2">Charts and stats coming soon.</p>
-            </div>
-          )}
+          {activeTab === "overview" && <Overview />}
 
-          {activeTab === "approval" && (
-            <div className="bg-white p-5 rounded-xl shadow">
-              <h2 className="text-2xl font-bold">Book Approval Queue</h2>
-              <p className="text-gray-500 mt-2">Pending approval books coming soon.</p>
-            </div>
-          )}
+          {activeTab === "approval" && <BookApprovalQueue />}
 
-          {activeTab === "users" && (
-            <div className="bg-white p-5 rounded-xl shadow">
-              <h2 className="text-2xl font-bold">Manage Users</h2>
-              <p className="text-gray-500 mt-2">Users table coming soon.</p>
-            </div>
-          )}
+          {activeTab === "users" && <ManageUsers />}
 
-          {activeTab === "books" && (
-            <div className="bg-white p-5 rounded-xl shadow">
-              <h2 className="text-2xl font-bold">Manage All Books</h2>
-              <p className="text-gray-500 mt-2">All books table coming soon.</p>
-            </div>
-          )}
+          {activeTab === "books" && <ManageAllBooks />}
 
-          {activeTab === "transactions" && (
-            <div className="bg-white p-5 rounded-xl shadow">
-              <h2 className="text-2xl font-bold">View All Transactions</h2>
-              <p className="text-gray-500 mt-2">Transactions table coming soon.</p>
-            </div>
-          )}
+          {activeTab === "transactions" && <ViewTransactions />}
         </div>
     </div>
   );

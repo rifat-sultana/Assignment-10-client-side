@@ -11,10 +11,7 @@ export default function DeliveryHistory() {
 
  useEffect(() => {
   const email =
-    localStorage.getItem("email");
-
-  console.log("Email:", email);
-  
+    localStorage.getItem("email");  
 
   fetch(
     `http://localhost:5000/deliveries/${email}`
