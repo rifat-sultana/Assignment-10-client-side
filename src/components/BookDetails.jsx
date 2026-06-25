@@ -262,10 +262,12 @@ return ( <div className="max-w-6xl mx-auto px-6 py-10"> <div className="grid md:
   </div>
 
   {isLoggedIn && (
-    <div className="mt-10">
-      <ReviewSection />
-    </div>
-  )}
+  <div className="mt-10">
+    <ReviewSection
+      bookId={book._id}
+    />
+  </div>
+)}
 </div>
 
 

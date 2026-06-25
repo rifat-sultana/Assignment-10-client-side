@@ -17,10 +17,15 @@ export default function BrowseBooks() {
   const [maxPrice, setMaxPrice] = useState("");
 
   useEffect(() => {
-    fetch("/books/books.json")
-      .then((res) => res.json())
-      .then((data) => setBooks(data));
-  }, []);
+  fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/books`
+  )
+    .then((res) => res.json())
+    .then((data) => setBooks(data))
+    .catch((err) =>
+      console.error(err)
+    );
+}, []);
 
   let filteredBooks = books.filter((book) => {
     const searchMatch = book.title
