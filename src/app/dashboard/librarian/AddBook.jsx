@@ -73,7 +73,7 @@ export default function AddBook() {
       };
 
       await fetch(
-        "http://localhost:5000/books",
+        `${process.env.NEXT_PUBLIC_API_URL}/books`,
         {
           method: "POST",
 

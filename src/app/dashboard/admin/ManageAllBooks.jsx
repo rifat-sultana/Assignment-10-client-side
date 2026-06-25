@@ -8,7 +8,7 @@ export default function ManageAllBooks() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/books/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/`)
       .then((res) => res.json())
       .then((data) => {
         setBooks(data);
@@ -25,7 +25,7 @@ export default function ManageAllBooks() {
       currentStatus === "Unpublished" ? "Published" : "Unpublished";
     try {
       const res = await fetch(
-        `http://localhost:5000/books/status/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/books/status/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -51,7 +51,7 @@ export default function ManageAllBooks() {
   const handleDelete = async (id) => {
     if (!confirm("Delete this book permanently?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/books/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/${id}`, {
         method: "DELETE",
       });
       const data = await res.json();

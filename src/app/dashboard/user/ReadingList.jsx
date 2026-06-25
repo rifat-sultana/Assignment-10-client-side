@@ -16,7 +16,7 @@ export default function ReadingList() {
       );
 
     fetch(
-      `http://localhost:5000/readinglist/${email}`
+      `${process.env.NEXT_PUBLIC_API_URL}/readinglist/${email}`
     )
       .then((res) => res.json())
       .then((data) => {

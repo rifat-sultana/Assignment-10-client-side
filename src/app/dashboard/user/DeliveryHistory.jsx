@@ -14,7 +14,7 @@ export default function DeliveryHistory() {
     localStorage.getItem("email");  
 
   fetch(
-    `http://localhost:5000/deliveries/${email}`
+    `${process.env.NEXT_PUBLIC_API_URL}/deliveries/${email}`
   )
     .then((res) => res.json())
     .then((data) => {

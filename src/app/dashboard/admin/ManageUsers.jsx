@@ -8,7 +8,7 @@ export default function ManageUsers() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/users/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/`)
       .then((res) => res.json())
       .then((data) => {
         setUsers(data);
@@ -23,7 +23,7 @@ export default function ManageUsers() {
   const handleRoleChange = async (id, newRole) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/users/role/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/role/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -50,7 +50,7 @@ export default function ManageUsers() {
     if (!confirm("Delete this user?")) return;
     try {
       const res = await fetch(
-        `http://localhost:5000/users/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${id}`,
         { method: "DELETE" }
       );
       const data = await res.json();

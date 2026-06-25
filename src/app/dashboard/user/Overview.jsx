@@ -19,7 +19,7 @@ export default function Overview() {
       localStorage.getItem("email");
 
     fetch(
-      `http://localhost:5000/dashboard/stats/${email}`
+      `${process.env.NEXT_PUBLIC_API_URL}/dashboard/stats/${email}`
     )
       .then((res) => res.json())
       .then((data) => setStats(data))

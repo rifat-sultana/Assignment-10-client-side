@@ -15,7 +15,7 @@ export default function Overview() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:5000/dashboard/admin-overview")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/dashboard/admin-overview`)
       .then((res) => res.json())
       .then((data) => setStats(data))
       .catch((err) => console.log(err));

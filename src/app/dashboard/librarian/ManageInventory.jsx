@@ -7,7 +7,7 @@ export default function ManageInventory() {
     useState([]);
 
   const loadBooks = () => {
-    fetch("http://localhost:5000/books")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`)
       .then((res) => res.json())
       .then((data) =>
         setBooks(data)
@@ -34,7 +34,7 @@ const editBook = async (book) => {
   if (!title) return;
 
   await fetch(
-    `http://localhost:5000/books/${book._id}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/books/${book._id}`,
     {
       method: "PATCH",
 
@@ -56,7 +56,7 @@ const editBook = async (book) => {
   id,
   status
 ) => {
-  await fetch(`http://localhost:5000/books/status/${id}`,
+  await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/status/${id}`,
     {
       method: "PATCH",
 
@@ -78,7 +78,7 @@ const editBook = async (book) => {
         return;
 
       await fetch(
-        `http://localhost:5000/books/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/books/${id}`,
         {
           method: "DELETE",
         }

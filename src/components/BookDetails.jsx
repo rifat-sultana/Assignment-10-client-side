@@ -27,7 +27,7 @@ setIsLoggedIn(loggedIn);
 setRole(userRole);
 
 fetch(
-  `http://localhost:5000/books/${bookId}`
+  `${process.env.NEXT_PUBLIC_API_URL}/books/${bookId}`
 )
   .then((res) => res.json())
   .then((data) => {
@@ -58,7 +58,7 @@ localStorage.getItem(
 
     const response =
       await fetch(
-        "http://localhost:5000/wishlist",
+        `${process.env.NEXT_PUBLIC_API_URL}/wishlist`,
         {
           method: "POST",
           headers: {
@@ -114,7 +114,7 @@ localStorage.getItem(
 
     const response =
       await fetch(
-        `http://localhost:5000/books/delivery/${book.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/books/delivery/${book.id}`,
         {
           method: "PATCH",
           headers: {

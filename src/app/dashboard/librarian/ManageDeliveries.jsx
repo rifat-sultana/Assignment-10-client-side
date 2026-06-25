@@ -8,7 +8,7 @@ export default function ManageDeliveries() {
 
   const loadDeliveries = () => {
     fetch(
-      "http://localhost:5000/deliveries"
+      `${process.env.NEXT_PUBLIC_API_URL}/deliveries`
     )
       .then((res) => res.json())
       .then((data) =>
@@ -26,7 +26,7 @@ export default function ManageDeliveries() {
         localStorage.getItem("email") || "";
 
       await fetch(
-        `http://localhost:5000/deliveries/status/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/deliveries/status/${id}`,
         {
           method: "PATCH",
           headers: {

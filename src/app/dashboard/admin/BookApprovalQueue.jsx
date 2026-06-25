@@ -8,7 +8,7 @@ export default function BookApprovalQueue() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/books/")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/`)
       .then((res) => res.json())
       .then((data) => {
         const pending = data.filter(
@@ -26,7 +26,7 @@ export default function BookApprovalQueue() {
   const handleApprove = async (id) => {
     try {
       const res = await fetch(
-        `http://localhost:5000/books/status/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/books/status/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -49,7 +49,7 @@ export default function BookApprovalQueue() {
     if (!confirm("Are you sure you want to delete this book?")) return;
     try {
       const res = await fetch(
-        `http://localhost:5000/books/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/books/${id}`,
         { method: "DELETE" }
       );
       const data = await res.json();

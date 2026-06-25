@@ -15,7 +15,7 @@ localStorage.getItem("email");
 
 
 fetch(
-  `http://localhost:5000/wishlist/${email}`
+  `${process.env.NEXT_PUBLIC_API_URL}/wishlist/${email}`
 )
   .then((res) => res.json())
   .then((data) => {

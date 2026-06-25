@@ -7,7 +7,7 @@ export default function MyReviews() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/reviews/user@gmail.com")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/reviews/user@gmail.com`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Reviews API:", data);
