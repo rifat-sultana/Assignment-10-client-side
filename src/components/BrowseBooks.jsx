@@ -6,104 +6,128 @@ import BookCard from "./BookCard";
 export default function BrowseBooks() {
   const [books, setBooks] = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("newest");
 
   const [showFilters, setShowFilters] = useState(false);
 
   const [category, setCategory] = useState("");
-  const [availability, setAvailability] = useState("");
+  const [status, setStatus] = useState("");
+
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
   useEffect(() => {
-  fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/books`
-  )
-    .then((res) => res.json())
-    .then((data) => setBooks(data))
-    .catch((err) =>
-      console.error(err)
+    const params = new URLSearchParams({
+      page: currentPage,
+      limit: 6,
+    });
+
+    if (search) {
+      params.append("search", search);
+    }
+
+    if (category) {
+      params.append("category", category);
+    }
+
+    if (status) {
+      params.append("status", status);
+    }
+
+    fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/books?${params.toString()}`
+    )
+      .then((res) => res.json())
+      .then((data) => {
+
+  let result = [...(data.books || [])];
+
+  if (minPrice !== "") {
+    result = result.filter(
+      (book) => book.price >= Number(minPrice)
     );
-}, []);
+  }
 
-  let filteredBooks = books.filter((book) => {
-    const searchMatch = book.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
-    const categoryMatch =
-      category === "" || book.category === category;
-
-    const availabilityMatch =
-      availability === "" ||
-      book.status === availability;
-
-    const minMatch =
-      minPrice === "" ||
-      book.price >= Number(minPrice);
-
-    const maxMatch =
-      maxPrice === "" ||
-      book.price <= Number(maxPrice);
-
-    return (
-      searchMatch &&
-      categoryMatch &&
-      availabilityMatch &&
-      minMatch &&
-      maxMatch
+  if (maxPrice !== "") {
+    result = result.filter(
+      (book) => book.price <= Number(maxPrice)
     );
-  });
+  }
 
   if (sort === "newest") {
-    filteredBooks.sort((a, b) => b.id - a.id);
+    result.sort((a, b) => b.id - a.id);
   }
 
   if (sort === "oldest") {
-    filteredBooks.sort((a, b) => a.id - b.id);
+    result.sort((a, b) => a.id - b.id);
   }
 
   if (sort === "low-high") {
-    filteredBooks.sort((a, b) => a.price - b.price);
+    result.sort((a, b) => a.price - b.price);
   }
 
   if (sort === "high-low") {
-    filteredBooks.sort((a, b) => b.price - a.price);
+    result.sort((a, b) => b.price - a.price);
   }
+
+  console.log("API Response:", data);
+  console.log("Result:", result);
+  console.log("Books Length:", result.length);
+
+  setBooks(result);
+  setTotalPages(data.totalPages || 1);
+
+})
+      .catch(console.error);
+  }, [
+    currentPage,
+    search,
+    category,
+    status,
+    sort,
+    minPrice,
+    maxPrice,
+  ]);
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
 
-      {/* Header */}
       <div className="mb-8">
-        <h1 className="inline-block text-4xl font-bold text-gray-800">
+
+        <h1 className="text-4xl font-bold">
           Browse Books
         </h1>
 
         <p className="text-gray-500 mt-2">
-          Explore our collection of books from local libraries and independent providers.
+          Explore our collection of books.
         </p>
-      </div>
 
-      {/* Search + Sort */}
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-5 mb-6">
+      </div>
+            <div className="bg-white rounded-2xl shadow-md p-5 mb-6">
+
         <div className="grid md:grid-cols-3 gap-4">
 
-          {/* Search */}
           <input
             type="text"
             placeholder="Search books..."
             className="input input-bordered w-full"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setCurrentPage(1);
+              setSearch(e.target.value);
+            }}
           />
 
-          {/* Sort */}
           <select
             className="select select-bordered w-full"
             value={sort}
-            onChange={(e) => setSort(e.target.value)}
+            onChange={(e) =>
+              setSort(e.target.value)
+            }
           >
             <option value="newest">
               Newest First
@@ -120,48 +144,35 @@ export default function BrowseBooks() {
             <option value="high-low">
               Price: High → Low
             </option>
+
           </select>
 
-          {/* Filter Button */}
           <button
-            onClick={() => setShowFilters(!showFilters)}
-            className="btn bg-indigo-600 hover:bg-indigo-700 text-white border-none w-full"
+            className="btn btn-primary"
+            onClick={() =>
+              setShowFilters(!showFilters)
+            }
           >
             Filters
           </button>
 
         </div>
+
       </div>
 
-      {/* Filter Panel */}
       {showFilters && (
-        <div className="bg-white border border-gray-200 rounded-2xl shadow-md p-5 mb-8">
 
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold text-lg">
-              Filter Options
-            </h3>
-
-            <button
-              onClick={() => {
-                setCategory("");
-                setAvailability("");
-                setMinPrice("");
-                setMaxPrice("");
-              }}
-              className="text-sm text-indigo-600 font-medium"
-            >
-              Clear All
-            </button>
-          </div>
+        <div className="bg-white rounded-2xl shadow-md p-5 mb-8">
 
           <div className="grid md:grid-cols-4 gap-4">
 
-            {/* Category */}
             <select
-              className="select select-bordered w-full"
+              className="select select-bordered"
               value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              onChange={(e) => {
+                setCurrentPage(1);
+                setCategory(e.target.value);
+              }}
             >
               <option value="">
                 All Categories
@@ -169,10 +180,6 @@ export default function BrowseBooks() {
 
               <option value="Programming">
                 Programming
-              </option>
-
-              <option value="Self Help">
-                Self Help
               </option>
 
               <option value="Business">
@@ -183,24 +190,16 @@ export default function BrowseBooks() {
                 Finance
               </option>
 
-              <option value="History">
-                History
-              </option>
-
-              <option value="Mystery">
-                Mystery
-              </option>
-
               <option value="Academic">
                 Academic
               </option>
 
-              <option value="Productivity">
-                Productivity
+              <option value="History">
+                History
               </option>
+
             </select>
 
-            {/* Min Price */}
             <input
               type="number"
               placeholder="Min Price"
@@ -211,7 +210,6 @@ export default function BrowseBooks() {
               }
             />
 
-            {/* Max Price */}
             <input
               type="number"
               placeholder="Max Price"
@@ -222,54 +220,101 @@ export default function BrowseBooks() {
               }
             />
 
-            {/* Availability */}
             <select
-              className="select select-bordered w-full"
-              value={availability}
-              onChange={(e) =>
-                setAvailability(e.target.value)
-              }
+              className="select select-bordered"
+              value={status}
+              onChange={(e) => {
+                setCurrentPage(1);
+                setStatus(e.target.value);
+              }}
             >
               <option value="">
-                All
+                All Status
               </option>
 
-              <option value="Available">
-                Available
+              <option value="Published">
+                Published
               </option>
 
-              <option value="Not Available">
-                Not Available
+              <option value="Unpublished">
+                Unpublished
               </option>
+
             </select>
 
           </div>
+
         </div>
+
       )}
 
-      {/* Books Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
 
-        {filteredBooks.length > 0 ? (
-          filteredBooks.map((book) => (
-            <BookCard
-              key={book.id}
-              book={book}
-            />
-          ))
-        ) : (
-          <div className="col-span-full text-center py-10">
+  {books.length > 0 ? (
+    books.map((book) => (
+      <BookCard
+        key={book._id}
+        book={book}
+      />
+    ))
+  ) : (
+    <div className="col-span-full text-center py-10">
+      <h2 className="text-2xl font-bold">
+        No Books Found
+      </h2>
 
-            <h3 className="text-xl font-semibold text-gray-600">
-              No Books Found
-            </h3>
+      <p className="text-gray-500 mt-2">
+        Try changing your search or filters.
+      </p>
+    </div>
+  )}
 
-            <p className="text-gray-500 mt-2">
-              Try changing your search or filters.
-            </p>
+</div>
 
-          </div>
+      {/* Pagination */}
+
+      <div className="flex justify-center items-center gap-3 mt-10">
+
+        <button
+          className="btn"
+          disabled={currentPage === 1}
+          onClick={() =>
+            setCurrentPage((prev) => prev - 1)
+          }
+        >
+          Previous
+        </button>
+
+        {Array.from(
+          { length: totalPages },
+          (_, index) => (
+            <button
+              key={index}
+              onClick={() =>
+                setCurrentPage(index + 1)
+              }
+              className={`btn ${
+                currentPage === index + 1
+                  ? "btn-primary"
+                  : "btn-outline"
+              }`}
+            >
+              {index + 1}
+            </button>
+          )
         )}
+
+        <button
+          className="btn"
+          disabled={
+            currentPage === totalPages
+          }
+          onClick={() =>
+            setCurrentPage((prev) => prev + 1)
+          }
+        >
+          Next
+        </button>
 
       </div>
 

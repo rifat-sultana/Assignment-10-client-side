@@ -2,16 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function BookCard({ book }) {
+  console.log("BookCard:", book);
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
       
       <div className="relative h-64 w-full">
-        <Image
-          src={book.image}
-          alt={book.title}
-          fill
-          className="object-cover"
-        />
+        <img
+  src={book.image}
+  alt={book.title}
+  className="w-full h-64 object-cover"
+/>
       </div>
 
       <div className="p-4">
