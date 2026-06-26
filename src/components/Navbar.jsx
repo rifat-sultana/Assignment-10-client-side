@@ -82,7 +82,7 @@ const handleSignOut = () => {
             />
           </div>
 
-          <span className="tracking-tight text-xl font-black text-slate-800">
+          <span className="tracking-tight text-xl font-black text-slate-800 zoom-pulse">
             <span className="text-indigo-600">
               Biblio
             </span>

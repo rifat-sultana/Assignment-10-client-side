@@ -20,7 +20,7 @@ export default function Footer() {
         <div className="flex flex-col lg:flex-row gap-6 justify-between items-center">
 
           <div>
-            <h2 className="text-2xl font-bold mb-2">
+            <h2 className="text-2xl font-bold mb-2 ">
               Subscribe to Our Newsletter
             </h2>
 
@@ -38,7 +38,7 @@ export default function Footer() {
               className="input input-bordered w-full lg:w-80 bg-white/10 text-white border-white/20 placeholder:text-slate-300"
             />
 
-            <button className="btn bg-white text-indigo-700 hover:bg-slate-100 border-0 rounded-xl px-8">
+            <button className="btn bg-white text-indigo-700 hover:bg-slate-100 border-0 rounded-xl px-8 zoom-pulse">
               Subscribe →
             </button>
 

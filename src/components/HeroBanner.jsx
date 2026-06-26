@@ -1,6 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const slides = [
   // {
@@ -48,7 +51,21 @@ const slides = [
   },
 ];
 
-export default function HeroBanner() {
+
+
+  export default function HeroBanner() {
+
+useEffect(() => {
+  AOS.init({
+    duration: 1000,
+    once: true,
+    easing: "ease-in-out",
+  });
+
+  AOS.refresh();
+}, []);
+
+ 
   return (
     <div className="carousel w-full h-[650px]">
       {slides.map((slide) => (
@@ -90,11 +107,17 @@ export default function HeroBanner() {
 
               {/* Buttons */}
               <div className="mt-8 flex flex-wrap justify-center gap-4">
-                <button className="btn btn-warning rounded-full px-8">
+                <button 
+                data-aos="zoom-in"
+                data-aos-delay="300"
+                className="btn btn-warning rounded-full px-8 zoom-pulse">
                   Explore Now →
                 </button>
 
-                <button className="btn btn-outline rounded-full px-8 text-white border-white hover:bg-white hover:text-black">
+                <button 
+                data-aos="zoom-in"
+                data-aos-delay="300"
+                className="btn btn-outline rounded-full px-8 text-white border-white hover:bg-white hover:text-black zoom-pulse">
                   Learn More
                 </button>
               </div>
