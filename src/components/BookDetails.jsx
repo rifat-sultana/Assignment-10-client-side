@@ -157,10 +157,8 @@ Loading... </div>
 );
 }
 
-const currentStatus =
-book.deliveryStatus ||
-book.status ||
-"Available";
+const currentStatus = book.deliveryStatus ||"Available";
+
 
 return ( <div className="max-w-6xl mx-auto px-6 py-10"> <div className="grid md:grid-cols-2 gap-10">
 
@@ -205,7 +203,7 @@ return ( <div className="max-w-6xl mx-auto px-6 py-10"> <div className="grid md:
           Status:
           <span className="font-semibold text-green-600">
             {" "}
-            {currentStatus}
+             {isLoggedIn ? currentStatus : "Available"}
           </span>
         </p>
 

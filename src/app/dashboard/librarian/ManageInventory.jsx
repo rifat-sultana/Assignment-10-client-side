@@ -5,12 +5,13 @@ import { useEffect, useState } from "react";
 export default function ManageInventory() {
   const [books, setBooks] = useState([]);
 
-  const loadBooks = () => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`)
-      .then((res) => res.json())
-      .then((data) => setBooks(data));
-  };
-
+ const loadBooks = () => {
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`)
+    .then((res) => res.json())
+    .then((data) => {
+      setBooks(data.books || []);
+    });
+};
   useEffect(() => {
     loadBooks();
   }, []);

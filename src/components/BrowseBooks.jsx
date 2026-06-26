@@ -20,78 +20,94 @@ export default function BrowseBooks() {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const params = new URLSearchParams({
-      page: currentPage,
-      limit: 6,
+  const params = new URLSearchParams({
+    page: currentPage,
+    limit: 6,
+  });
+
+  if (search) params.append("search", search);
+  if (category) params.append("category", category);
+  if (status) params.append("status", status);
+
+  setLoading(true);
+  
+  fetch(`${process.env.NEXT_PUBLIC_API_URL}/books?${params.toString()}`)
+    .then((res) => res.json())
+    .then((data) => {
+      let result = [...(data.books || [])];
+
+      if (minPrice !== "") {
+        result = result.filter(
+          (book) => book.price >= Number(minPrice)
+        );
+      }
+
+      if (maxPrice !== "") {
+        result = result.filter(
+          (book) => book.price <= Number(maxPrice)
+        );
+      }
+
+      if (sort === "newest") {
+        result.sort((a, b) => b.id - a.id);
+      }
+
+      if (sort === "oldest") {
+        result.sort((a, b) => a.id - b.id);
+      }
+
+      if (sort === "low-high") {
+        result.sort((a, b) => a.price - b.price);
+      }
+
+      if (sort === "high-low") {
+        result.sort((a, b) => b.price - a.price);
+      }
+
+      setBooks(result);
+      setTotalPages(data.totalPages || 1);
+    })
+    .catch(console.error)
+    .finally(() => {
+      setLoading(false);
     });
+}, [
+  currentPage,
+  search,
+  category,
+  status,
+  sort,
+  minPrice,
+  maxPrice,
+]);
+  
+  if (loading) {
+  return (
+    <section className="max-w-7xl mx-auto px-6 py-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-    if (search) {
-      params.append("search", search);
-    }
+        {[...Array(6)].map((_, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-xl shadow p-4 animate-pulse"
+          >
+            <div className="h-64 bg-gray-300 rounded"></div>
 
-    if (category) {
-      params.append("category", category);
-    }
+            <div className="h-5 bg-gray-300 rounded mt-4"></div>
 
-    if (status) {
-      params.append("status", status);
-    }
+            <div className="h-4 bg-gray-300 rounded mt-2 w-2/3"></div>
 
-    fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/books?${params.toString()}`
-    )
-      .then((res) => res.json())
-      .then((data) => {
+            <div className="h-10 bg-gray-300 rounded mt-6"></div>
+          </div>
+        ))}
 
-  let result = [...(data.books || [])];
-
-  if (minPrice !== "") {
-    result = result.filter(
-      (book) => book.price >= Number(minPrice)
-    );
-  }
-
-  if (maxPrice !== "") {
-    result = result.filter(
-      (book) => book.price <= Number(maxPrice)
-    );
-  }
-
-  if (sort === "newest") {
-    result.sort((a, b) => b.id - a.id);
-  }
-
-  if (sort === "oldest") {
-    result.sort((a, b) => a.id - b.id);
-  }
-
-  if (sort === "low-high") {
-    result.sort((a, b) => a.price - b.price);
-  }
-
-  if (sort === "high-low") {
-    result.sort((a, b) => b.price - a.price);
-  }
-
-  console.log("API Response:", data);
-  console.log("Result:", result);
-  console.log("Books Length:", result.length);
-
-  setBooks(result);
-  setTotalPages(data.totalPages || 1);
-
-})
-      .catch(console.error);
-  }, [
-    currentPage,
-    search,
-    category,
-    status,
-    sort,
-    minPrice,
-    maxPrice,
-  ]);
+      </div>
+    </section>
+  );
+}
 
   return (
     <section className="max-w-7xl mx-auto px-6 py-12">
@@ -248,7 +264,7 @@ export default function BrowseBooks() {
 
       )}
 
-   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
   {books.length > 0 ? (
     books.map((book) => (
