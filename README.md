@@ -1,10 +1,10 @@
-Project name:  BiblioDrop – Online Book Delivery Management System
+**Project name**:  BiblioDrop – Online Book Delivery Management System
 
 **Purpose**:The purpose of BiblioDrop is to make book ordering and delivery easier by providing an efficient online platform for managing books, orders, and deliveries.
 
 **Key Features of BiblioDrop** – Online Book Delivery Management System
-User Registration & Login – Secure account creation and authentication for customers and administrators.
-Book Catalog Management – Browse and search books by title, author, category, or genre.
+**User Registration & Login** – Secure account creation and authentication for customers and administrators.
+**Book Catalog Management** – Browse and search books by title, author, category, or genre.
 **Book Details View** – View detailed information about books, including price, description, and availability.
 **Online Book Ordering** – Add books to cart and place orders easily.
 **Order Tracking** – Customers can track the status of their orders in real time.
