@@ -6,6 +6,7 @@ export default function ReviewSection({ bookId }) {
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
+  const [canReview, setCanReview] = useState(false);
 
   const email = localStorage.getItem("email");
 
@@ -27,6 +28,16 @@ export default function ReviewSection({ bookId }) {
     if (bookId) {
       loadReviews();
     }
+
+    if (email) {
+  fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/delivery/can-review/${bookId}/${email}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      setCanReview(data.canReview);
+    });
+}
   }, [bookId]);
 
   const handleSubmit = async (e) => {
@@ -80,10 +91,11 @@ export default function ReviewSection({ bookId }) {
     Reviews
   </h2>
 
-  <form
-    onSubmit={handleSubmit}
-    className="bg-white shadow rounded-xl p-6 space-y-4"
-  >
+  {canReview ? (
+
+<form
+  onSubmit={handleSubmit}
+>
 
     <div>
       <label className="font-semibold">
@@ -128,7 +140,17 @@ export default function ReviewSection({ bookId }) {
       Submit Review
     </button>
 
-  </form>
+ </form>
+
+) : (
+
+<div className="alert alert-warning">
+
+Only users with a completed delivery can submit a review.
+
+</div>
+
+)}
 
   <div className="mt-8 space-y-4">
 
