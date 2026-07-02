@@ -8,13 +8,10 @@ export default function BookApprovalQueue() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/books?status=Pending%20Approval&limit=100`)
       .then((res) => res.json())
       .then((data) => {
-        const pending = data.filter(
-          (book) => book.status === "Pending Approval"
-        );
-        setBooks(pending);
+        setBooks(data.books || []);
         setLoading(false);
       })
       .catch(() => {
