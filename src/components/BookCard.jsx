@@ -45,7 +45,7 @@ export default function BookCard({ book }) {
           </span>
         </div>
 
-          <Link href={`/books/${book.id}`}>
+          <Link href={`/books/${book._id || book.id}`}>
               <button className="btn btn-primary w-full mt-4">
                 View Details
               </button>
