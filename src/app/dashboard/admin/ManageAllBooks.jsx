@@ -11,7 +11,7 @@ export default function ManageAllBooks() {
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/books/`)
       .then((res) => res.json())
       .then((data) => {
-        setBooks(data);
+        setBooks(data.books || []);
         setLoading(false);
       })
       .catch(() => {
@@ -97,7 +97,7 @@ export default function ManageAllBooks() {
               </tr>
             </thead>
             <tbody>
-              {books.map((book, index) => (
+              {books?.map((book, index) => (
                 <tr key={book._id}>
                   <td>{index + 1}</td>
                   <td className="font-medium">{book.title}</td>
