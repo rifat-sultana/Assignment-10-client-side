@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Overview from "./Overview";
 import DeliveryHistory from "./DeliveryHistory";
 import ReadingList from "./ReadingList";
@@ -9,16 +10,29 @@ import WishList from "./WishList";
 
 export default function UserDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
-
   const [name, setName] = useState("");
-
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    setName(localStorage.getItem("name") || "User");
+    const role = localStorage.getItem("role");
+    if (role === "user") {
+      setName(localStorage.getItem("name") || "User");
+      setEmail(localStorage.getItem("email") || "");
+    } else {
+      router.replace("/");
+    }
+    setLoading(false);
+  }, [router]);
 
-    setEmail(localStorage.getItem("email") || "");
-  }, []);
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-base-200 p-6">
