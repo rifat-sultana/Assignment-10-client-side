@@ -66,7 +66,7 @@ localStorage.getItem(
               "application/json",
           },
           body: JSON.stringify({
-            bookId: book.id,
+            bookId: book._id || book.id,
             title: book.title,
             userEmail: email,
           }),
@@ -114,7 +114,7 @@ localStorage.getItem(
 
     const response =
       await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/books/delivery/${book.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/books/delivery/${book._id || book.id}`,
         {
           method: "PATCH",
           headers: {
