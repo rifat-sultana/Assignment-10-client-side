@@ -37,7 +37,9 @@ export default function BrowseBooks() {
   fetch(`${process.env.NEXT_PUBLIC_API_URL}/books?${params.toString()}`)
     .then((res) => res.json())
     .then((data) => {
-      let result = [...(data.books || [])];
+      let result = [...(data.books || [])].filter(
+        (book) => book.status !== "Pending Approval"
+      );
 
       if (minPrice !== "") {
         result = result.filter(
