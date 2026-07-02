@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Overview from "./Overview";
 import BookApprovalQueue from "./BookApprovalQueue";
 import ManageUsers from "./ManageUsers";
@@ -11,11 +12,27 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
-    setName(localStorage.getItem("name") || "Admin");
-    setEmail(localStorage.getItem("email") || "");
-  }, []);
+    const role = localStorage.getItem("role");
+    if (role === "admin") {
+      setName(localStorage.getItem("name") || "Admin");
+      setEmail(localStorage.getItem("email") || "");
+    } else {
+      router.replace("/");
+    }
+    setLoading(false);
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-base-200 flex">
